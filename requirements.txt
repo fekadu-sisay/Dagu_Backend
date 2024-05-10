@@ -5,3 +5,4 @@ requests
 psycopg2
 django-debug-toolbar
 djangorestframework-simplejwt
+gunicorn
