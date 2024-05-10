@@ -6,3 +6,4 @@ psycopg2
 django-debug-toolbar
 djangorestframework-simplejwt
 gunicorn
+dj_database_url
