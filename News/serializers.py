@@ -23,13 +23,13 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'first_name', 'last_name',
                   'email', 'topics_selected', 'profile_pic', 'last_login')
 
-    def update(self, instance, validated_data):
-        topics_data = validated_data.pop('topics_selected')
-        instance = super().update(instance, validated_data)
-        for topic_data in topics_data:
-            topic, _ = Topics.objects.get_or_create(**topic_data)
-            instance.topics_selected.add(topic)
-        return instance
+        def update(self, instance, validated_data):
+            topics_data = validated_data.get('topics_selected', [])
+            instance = super().update(instance, validated_data)
+            for topic_data in topics_data:
+                topic, _ = Topics.objects.get_or_create(**topic_data)
+                instance.topics_selected.add(topic)
+                return instance
 
 
 class StoredNewsSerializer(serializers.ModelSerializer):
