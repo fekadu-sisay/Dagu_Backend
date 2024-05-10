@@ -1,0 +1,7 @@
+django
+django-cors-headers
+djangorestframework
+requests
+psycopg2
+django-debug-toolbar
+djangorestframework-simplejwt
