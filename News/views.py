@@ -42,7 +42,7 @@ class StoredNews(ListCreateAPIView):
 
 class StoredNewsDetail(RetrieveDestroyAPIView):
     queryset = News.objects.all()
-    serializer_class = serializers.StoredNewsSerializer
+    serializer_class = serializers.SharedNewsDetailSerializer
 
 
 class SharedNewsList(ListCreateAPIView):

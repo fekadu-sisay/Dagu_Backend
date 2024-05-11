@@ -48,6 +48,13 @@ class StoredNewsSerializer(serializers.ModelSerializer):
 
 
 class SharedNewsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Share
+        fields = ('id', 'news_id', 'source', 'destination')
+
+
+class SharedNewsDetailSerializer(serializers.ModelSerializer):
     news_id = NewsSerializer()
     source_name = serializers.CharField(
         source='source.first_name', read_only=True)
