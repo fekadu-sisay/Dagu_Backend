@@ -42,7 +42,7 @@ class StoredNews(ListCreateAPIView):
 
 class StoredNewsDetail(RetrieveDestroyAPIView):
     queryset = News.objects.all()
-    serializer_class = serializers.SharedNewsDetailSerializer
+    serializer_class = serializers.StoredNewsSerializer
 
 
 class SharedNewsList(ListCreateAPIView):
@@ -51,7 +51,7 @@ class SharedNewsList(ListCreateAPIView):
 
 
 class SharedNewsDetail(ListCreateAPIView):
-    serializer_class = serializers.SharedNewsSerializer
+    serializer_class = serializers.SharedNewsDetailSerializer
     lookup_field = 'destination'
 
     def get_queryset(self):
