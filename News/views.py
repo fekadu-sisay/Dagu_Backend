@@ -9,10 +9,10 @@ from . import serializers
 from .models import Follow, News, NewsArticle, Share, User
 
 
-@api_view(['GET,POST'])
+@api_view(['GET', 'POST'])
 def create_news_article(request):
     if request.method == 'POST':
-        serializer = serializers.NewsArticleSerializer(data=request.data)
+        serializer = serializers.NewsSerializer(data=request.data)
         if serializer.is_valid():
             news_article = serializer.save()
             response_data = {
@@ -23,6 +23,11 @@ def create_news_article(request):
             return Response(response_data, status=status.HTTP_201_CREATED)
         else:
             return Response({'success': False, 'message': 'Invalid data provided.'}, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'GET':
+        news_articles = NewsArticle.objects.all()
+        serializer = serializers.NewsSerializer(
+            news_articles, many=True)
+        return Response(serializer.data)
 
 
 class NewsArticle(RetrieveAPIView):
