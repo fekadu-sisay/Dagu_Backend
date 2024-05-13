@@ -77,6 +77,16 @@ class BookmarkedNewsSerializer(serializers.ModelSerializer):
         fields = ('user_id', 'user_name', 'news_id', 'news', 'bookmarked')
 
 
+class LikedNewsSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(
+        source="user_id.username", read_only=True)
+    news = NewsSerializer(source="news_id", read_only=True)
+
+    class Meta:
+        model = News
+        fields = ('user_id', 'user_name', 'news_id', 'news', 'liked')
+
+
 class FollowSerializer(serializers.ModelSerializer):
     followed_user = UserSerializer(source="following", read_only=True)
 

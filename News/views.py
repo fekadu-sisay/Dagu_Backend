@@ -99,6 +99,20 @@ class BookmarkedNewsDetail(RetrieveDestroyAPIView):
     lookup_field = 'news_id'
 
 
+class LikedNewsList(ListCreateAPIView):
+    serializer_class = serializers.LikedNewsSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        return News.objects.filter(liked=True, user_id=user_id)
+
+
+class LikedNewsDetail(RetrieveDestroyAPIView):
+    queryset = News.objects.filter(liked=True).all()
+    serializer_class = serializers.LikedNewsSerializer
+    lookup_field = 'news_id'
+
+
 class FollowList(ListCreateAPIView):
     queryset = Follow.objects.all()
     serializer_class = serializers.FollowSerializer
