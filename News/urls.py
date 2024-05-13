@@ -18,7 +18,7 @@ urlpatterns = [
     path('bookmarked/<int:user_id>/<int:news_id>',
          views.BookmarkedNewsDetail.as_view(), name='bookmarked-news-detail'),
     path('liked/<int:user_id>',
-         views.LikedNewsDetail.as_view(), name='liked-news'),
+         views.LikedNewsList.as_view(), name='liked-news'),
     path('liked/<int:user_id>/<int:news_id>',
          views.LikedNewsDetail.as_view(), name='liked-news-detail'),
     path('follow/<int:follower>', views.FollowList.as_view(), name='follow-list'),
