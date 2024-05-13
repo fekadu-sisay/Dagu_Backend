@@ -9,7 +9,7 @@ from . import serializers
 from .models import Follow, News, NewsArticle, Share, User
 
 
-@api_view(['POST'])
+@api_view(['GET,POST'])
 def create_news_article(request):
     if request.method == 'POST':
         serializer = serializers.NewsArticleSerializer(data=request.data)
