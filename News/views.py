@@ -1,14 +1,28 @@
+from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.generics import (ListCreateAPIView, RetrieveAPIView,
                                      RetrieveDestroyAPIView,
                                      RetrieveUpdateAPIView)
+from rest_framework.response import Response
 
 from . import serializers
 from .models import Follow, News, NewsArticle, Share, User
 
 
-class NewsList(ListCreateAPIView):
-    queryset = NewsArticle.objects.all()
-    serializer_class = serializers.NewsSerializer
+@api_view(['POST'])
+def create_news_article(request):
+    if request.method == 'POST':
+        serializer = serializers.NewsArticleSerializer(data=request.data)
+        if serializer.is_valid():
+            news_article = serializer.save()
+            response_data = {
+                'success': True,
+                'message': 'News article created successfully.',
+                'news_id': news_article.id
+            }
+            return Response(response_data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'success': False, 'message': 'Invalid data provided.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class NewsArticle(RetrieveAPIView):
@@ -19,7 +33,6 @@ class NewsArticle(RetrieveAPIView):
 class UsersList(ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
-    # Define the fields you want to enable search on
     search_fields = ['username']
 
     def get_queryset(self):
