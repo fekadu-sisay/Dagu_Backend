@@ -30,7 +30,7 @@ def create_news_article(request):
         return Response(serializer.data)
 
 
-class NewsArticle(RetrieveAPIView):
+class NewsArticles(RetrieveAPIView):
     queryset = NewsArticle.objects.all()
     serializer_class = serializers.NewsSerializer
 
