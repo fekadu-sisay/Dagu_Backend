@@ -57,17 +57,13 @@ class StoredNews(ListCreateAPIView):
     queryset = News.objects.all()
     serializer_class = serializers.StoredNewsSerializer
 
-class StoredNewsDetail(RetrieveDestroyAPIView):
+class StoredNewsDetail(ListAPIView):
     serializer_class = serializers.StoredNewsSerializer
     lookup_field = 'news_id'
-    search_fields = ['username']
 
     def get_queryset(self):
-        queryset = News.objects.filter(liked=True)
-        username = self.request.query_params.get('username', None)
-        if username is not None:
-            queryset = queryset.filter(username=username)
-        return queryset
+        news_id = self.kwargs.get(self.lookup_field)
+        return News.objects.filter(news_id=news_id, liked=True)
 
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
