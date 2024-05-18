@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.generics import (ListCreateAPIView, RetrieveAPIView,
                                      RetrieveDestroyAPIView,
-                                     RetrieveUpdateAPIView)
+                                     RetrieveUpdateAPIView,ListAPIView)
 from rest_framework.response import Response
 
 from . import serializers
@@ -58,7 +58,7 @@ class StoredNews(ListCreateAPIView):
     serializer_class = serializers.StoredNewsSerializer
 
 class StoredNewsDetail(ListAPIView):
-    serializer_class = serializers.StoredNewsSerializer
+    serializer_class =serializers.StoredNewsSerializer
     lookup_field = 'news_id'
 
     def get_queryset(self):
