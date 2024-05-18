@@ -8,7 +8,7 @@ urlpatterns = [
     path('users/', views.UsersList.as_view(), name='users'),
     path('users/<int:pk>', views.UserDetail.as_view(), name='user-detail'),
     path('stored/', views.StoredNews.as_view(), name='stored-news'),
-    path('stored/<int:pk>', views.StoredNewsDetail.as_view(),
+    path('stored/<int:news_id>', views.StoredNewsDetail.as_view(),
          name='stored-news-detail'),
     path('shared/', views.SharedNewsList.as_view(), name='shared-news'),
     path('shared/<int:destination>',

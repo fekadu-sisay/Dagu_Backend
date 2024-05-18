@@ -57,10 +57,11 @@ class StoredNews(ListCreateAPIView):
     queryset = News.objects.all()
     serializer_class = serializers.StoredNewsSerializer
 
-
 class StoredNewsDetail(RetrieveDestroyAPIView):
-    queryset = News.objects.all()
+    queryset = News.objects.filter(liked=True)
     serializer_class = serializers.StoredNewsSerializer
+    lookup_field = 'news_id'
+    search_fields = ['username']
 
 
 class SharedNewsList(ListCreateAPIView):
