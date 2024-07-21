@@ -18,7 +18,8 @@ def create_news_article(request):
             response_data = {
                 'success': True,
                 'message': 'News article created successfully.',
-                'news_id': news_article.id
+                'news_id': news_article.id,
+                'news_title': news_article.title
             }
             return Response(response_data, status=status.HTTP_201_CREATED)
         else:
