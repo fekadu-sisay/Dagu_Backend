@@ -1,12 +1,19 @@
 from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.generics import (ListCreateAPIView, RetrieveAPIView,
                                      RetrieveDestroyAPIView,
                                      RetrieveUpdateAPIView,ListAPIView)
 from rest_framework.response import Response
-
 from . import serializers
 from .models import Follow, News, NewsArticle, Share, User
+from django.contrib.staticfiles import finders
+import json
+import pandas as pd
+from django.views import View
+from django.http import JsonResponse
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 
 @api_view(['GET', 'POST'])
@@ -150,3 +157,33 @@ class FollowDetail(RetrieveDestroyAPIView):
     def get_queryset(self):
         following_id = self.kwargs['following']
         return Follow.objects.filter(following=following_id)
+
+
+class RecommendationView(APIView):
+    def get(self, request, *args, **kwargs):
+        file_path = finders.find('data/News_Category_Dataset_v3.json')
+        with open(file_path, 'r') as file:
+            data = [json.loads(line) for line in file]
+        
+        df = pd.DataFrame(data)
+        
+        query_word = request.GET.get('query_word', '')
+
+        if not query_word:
+            return JsonResponse({'error': 'Query word is required.'}, status=400)
+        
+        df['text_combined'] = df['headline'] + ' ' + df['short_description'] + ' ' + df['category']
+        
+        tfidf_vectorizer = TfidfVectorizer(stop_words='english')
+        
+        tfidf_matrix = tfidf_vectorizer.fit_transform(df['text_combined'])
+        
+        query_tfidf = tfidf_vectorizer.transform([query_word])
+        
+        cosine_sim = cosine_similarity(query_tfidf, tfidf_matrix).flatten()
+        
+        top_indices = cosine_sim.argsort()[-3:][::-1]  # Get indices of top 3 most similar
+        
+        top_categories = df.iloc[top_indices]['category'].tolist()
+        
+        return JsonResponse({'top_categories': top_categories})
